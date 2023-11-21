@@ -1,15 +1,14 @@
 package service;
 
-import entity.Administrator;
+
 import entity.User;
 import org.mindrot.jbcrypt.BCrypt;
-
-import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.security.SecureRandom;
-import java.sql.*;
-import java.util.Arrays;
-import java.util.Scanner;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 
 public class UserService {
 
