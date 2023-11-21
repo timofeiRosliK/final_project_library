@@ -47,17 +47,7 @@ public class BookService {
 
     public boolean isModifyCatalogue( Administrator administrator, AdministratorService administratorService)
             throws SQLException, NoSuchAlgorithmException, IsNotAllowedToModifyCatalogueException {
-//            throws IsNotAllowedToModifyCatalogueException, SQLException {
-//        final String DATABASE_URL = "jdbc:mysql://localhost:3306/library";
-//        final String USER = "root";
-//        final String PASSWORD = "root";
-//        Connection connection = DriverManager.getConnection(DATABASE_URL, USER, PASSWORD);
-//        Statement statement = connection.createStatement();
-//        String sql = "SELECT name, hashed_password from administrators ";
-//        ResultSet rs = statement.executeQuery(sql);
-//        while (rs.next()) {
-//            String adminName = rs.getString("name");
-//            String hashedPassword = rs.getString("hashed_password");
+
         if (!administratorService.authorization(administrator)) {
             throw new IsNotAllowedToModifyCatalogueException("This user is not allowed to modify the catalogue");
         }

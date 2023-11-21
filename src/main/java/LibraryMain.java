@@ -20,11 +20,11 @@ public class LibraryMain {
         String inputHashedPasswordUser = userService.hashingPassword(user);
         String inputHashedPasswordAdmin = administratorService.hashingPassword(administrator);
 
-        if(userService.authorization(user)){
+        if (userService.authorization(user)) {
             System.out.println("Authorization is succeed by user " + user.getUsername());
-        }else if(administratorService.authorization(administrator)) {
+        } else if (administratorService.authorization(administrator)) {
             System.out.println("Authorization is succeed by admin " + administrator.getUsername());
-        }else System.out.println("Log or password is invalid");
+        } else System.out.println("Log or password is invalid");
         AuthorService authorService = new AuthorService();
         BookService bookService = new BookService(authorService);
         List<Book> allBooks = bookService.getAllBooks();
@@ -32,5 +32,5 @@ public class LibraryMain {
         boolean isModifyCatalogue = bookService.isModifyCatalogue(administrator, administratorService);
         System.out.println("isModifyCatalogue = " + isModifyCatalogue);
     }
-    }
+}
 
