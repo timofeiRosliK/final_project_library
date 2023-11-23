@@ -16,10 +16,9 @@ public class LibraryMain {
         UserService userService = new UserService();
         AdministratorService administratorService = new AdministratorService();
         User user = new User(name, password);
+        String email = userService.getEmail(user);
+        System.out.println("email = " + email);
         Administrator administrator = new Administrator(name, password);
-        String inputHashedPasswordUser = userService.hashingPassword(user);
-        String inputHashedPasswordAdmin = administratorService.hashingPassword(administrator);
-
         if (userService.authorization(user)) {
             System.out.println("Authorization is succeed by user " + user.getUsername());
         } else if (administratorService.authorization(administrator)) {
@@ -29,6 +28,8 @@ public class LibraryMain {
         BookService bookService = new BookService(authorService);
         List<Book> allBooks = bookService.getAllBooks();
         System.out.println(allBooks);
+        String message = bookService.sendNotificationToUser(user);
+        System.out.println("message = " + message);
         boolean isModifyCatalogue = bookService.isModifyCatalogue(administrator, administratorService);
         System.out.println("isModifyCatalogue = " + isModifyCatalogue);
     }
