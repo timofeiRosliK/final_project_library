@@ -9,21 +9,24 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.logging.Logger;
+
+import static service.DbConfig.DATABASE_URL;
+import static service.DbConfig.PASSWORD;
+import static service.DbConfig.USER;
 
 public class UserService {
+    private static final String sql = "SELECT * from users where name = ?";
 
-    public String hashingPassword(User user) {
-        return BCrypt.hashpw(user.getPassword(), BCrypt.gensalt());
+    public String hashingPassword(String password) {
+        return BCrypt.hashpw(password, BCrypt.gensalt());
     }
 
-    public boolean authorization(User user) throws SQLException{
-        final String DATABASE_URL = "jdbc:mysql://localhost:3306/library";
-        final String USER = "root";
-        final String PASSWORD = "root";
+    public boolean authorization(User user) throws SQLException {
         try (Connection connection = DriverManager.getConnection(DATABASE_URL, USER, PASSWORD);
-            Statement statement = connection.createStatement()){
-            String sql = "SELECT name, hashed_password from users ";
-            ResultSet rs = statement.executeQuery(sql);
+             PreparedStatement preparedStatement = connection.prepareStatement(sql)){
+            preparedStatement.setString(1, user.getUsername());
+            ResultSet rs = preparedStatement.executeQuery();
             while (rs.next()) {
                 String userName = rs.getString("name");
                 String hashedPassword = rs.getString("hashed_password");
@@ -36,25 +39,18 @@ public class UserService {
     }
 
 
-    public static boolean comparePasswords(String inputPassword, String hashedPassword) {
+    private static boolean comparePasswords(String inputPassword, String hashedPassword) {
         return BCrypt.checkpw(inputPassword, hashedPassword);
     }
 
-    public String getEmail(User user) throws SQLException {
-        final String DATABASE_URL = "jdbc:mysql://localhost:3306/library";
-        final String USER = "root";
-        final String PASSWORD = "root";
+    public String getEmailByUsername(String name) throws SQLException {
         try (Connection connection = DriverManager.getConnection(DATABASE_URL, USER, PASSWORD);
         PreparedStatement preparedStatement = connection.prepareStatement
                 ( "SELECT email from users where name = ?")) {
-            preparedStatement.setString(1, user.getUsername());
+            preparedStatement.setString(1, name);
             ResultSet rs = preparedStatement.executeQuery();
-            StringBuilder stringBuilder = new StringBuilder();
-            while (rs.next()) {
-                String email = rs.getString("email");
-                stringBuilder.append(email);
-            }
-            return stringBuilder.toString();
+            rs.next();
+            return rs.getString("email");
         }
     }
 }

@@ -29,7 +29,7 @@ public class LibraryMain {
         List<Book> allBooks = bookService.getAllBooks();
         System.out.println(allBooks);
         String message = bookService.sendNotificationToUser(user);
-        System.out.println("message = " + message);
+        System.out.println("message! = " + message);
         boolean isModifyCatalogue = bookService.isModifyCatalogue(administrator, administratorService);
         System.out.println("isModifyCatalogue = " + isModifyCatalogue);
     }
