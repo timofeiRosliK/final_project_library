@@ -7,18 +7,23 @@ import entity.Genre;
 import entity.User;
 import lombok.AllArgsConstructor;
 
-
 import java.security.NoSuchAlgorithmException;
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+
+import static service.DbConfig.*;
+
 
 @AllArgsConstructor
 public class BookService {
 
-    static final String DATABASE_URL = "jdbc:mysql://localhost:3306/library";
-    static final String USER = "root";
-    static final String PASSWORD = "root";
 
     private final AuthorService authorService;
 
@@ -45,7 +50,7 @@ public class BookService {
 
     public boolean isModifyCatalogue(Administrator administrator, AdministratorService administratorService)
             throws SQLException, NoSuchAlgorithmException, IsNotAllowedToModifyCatalogueException {
-        if (!administratorService.authorization(administrator)) {
+        if (!administratorService.authorization(administrator)){
             throw new IsNotAllowedToModifyCatalogueException("This user is not allowed to modify the catalogue");
         }
         return true;
@@ -68,7 +73,7 @@ public class BookService {
             resultSet.close();
 
 
-            return "Hello " + userService.getEmail(user) + "!" + "\n" + " Here is the the new book which is " +
+            return "Hello " + userService.getEmailByUsername(user.getUsername()) + "!" + "\n" + " Here is the the new book which is " +
                     notificationBuilder;
         }
     }

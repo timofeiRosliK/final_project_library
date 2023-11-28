@@ -6,26 +6,27 @@ import org.mindrot.jbcrypt.BCrypt;
 
 import java.security.NoSuchAlgorithmException;
 import java.sql.*;
-import java.util.Scanner;
+
+import static service.DbConfig.*;
+
 
 public class AdministratorService {
-
-    public String hashingPassword(Administrator administrator) {
-        return BCrypt.hashpw(administrator.getPassword(), BCrypt.gensalt());
+    private static final String sql = "SELECT * from administrators where name = ?";
+    public String hashingPassword(String password) {
+        return BCrypt.hashpw(password, BCrypt.gensalt());
     }
 
-    public boolean authorization(Administrator administrator) throws SQLException, NoSuchAlgorithmException {
-        final String DATABASE_URL = "jdbc:mysql://localhost:3306/library";
-        final String USER = "root";
-        final String PASSWORD = "root";
+
+    public boolean authorization(Administrator administrator) throws SQLException{
         Connection connection = DriverManager.getConnection(DATABASE_URL, USER, PASSWORD);
-        Statement statement = connection.createStatement();
-        String sql = "SELECT name, hashed_password from administrators ";
-        ResultSet rs = statement.executeQuery(sql);
+        PreparedStatement preparedStatement = connection.prepareStatement(sql);
+        preparedStatement.setString(1,administrator.getUsername());
+        ResultSet rs = preparedStatement.executeQuery();
+
         while (rs.next()) {
             String administratorName = rs.getString("name");
             String hashedPassword = rs.getString("hashed_password");
-            if (administrator.getUsername().equals(administratorName) && comparePasswords(administrator.getPassword(),
+            if (administrator.getUsername().equals(administratorName) && comparePasswords((administrator.getPassword()),
                     hashedPassword)) {
                 return true;
             }
@@ -36,6 +37,4 @@ public class AdministratorService {
     public static boolean comparePasswords(String inputPassword, String hashedPassword) {
         return BCrypt.checkpw(inputPassword, hashedPassword);
     }
-
-
 }
