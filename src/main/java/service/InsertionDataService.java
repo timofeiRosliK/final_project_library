@@ -22,12 +22,11 @@ public class InsertionDataService {
         preparedStatement.setString(3, email);
         preparedStatement.execute();
         connection.close();
-
     }
     public void insertDataUser(String name, String password, String email) throws SQLException {
         Connection connection = DriverManager.getConnection(DATABASE_URL,USER,PASSWORD);
         PreparedStatement preparedStatement = connection.prepareStatement(sqlUser);
-        preparedStatement.setString(1, "Timofei");
+        preparedStatement.setString(1, name);
         preparedStatement.setString(2,  hashingPassword(password));
         preparedStatement.setString(3, email);
         preparedStatement.execute();
