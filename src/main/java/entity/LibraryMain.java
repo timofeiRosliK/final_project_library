@@ -55,15 +55,14 @@ public class LibraryMain {
                 log.info("Input email");
                 String insertEmail = scanner.nextLine();
                 Administrator administratorWithEmail = new Administrator(name, insertEmail, password);
-                String hashingPassword = insertionDataService.hashingPassword(administratorWithEmail.getPassword());
-                insertionDataService.insertDataAdmin(administratorWithEmail.getUsername(), hashingPassword, administratorWithEmail.getEmail());
+                insertionDataService.insertDataAdmin(administratorWithEmail.getUsername(), administratorWithEmail.getPassword(),
+                        administratorWithEmail.getEmail());
                 break;
             case "InsertionUser":
                 log.info("Input email");
                 String insertEmail1 = scanner.nextLine();
                 User userWithEmail = new User(name, insertEmail1, password);
-                String hashingPassword1 = insertionDataService.hashingPassword(userWithEmail.getPassword());
-                insertionDataService.insertDataUser(userWithEmail.getUsername(), hashingPassword1, userWithEmail.getEmail());
+                insertionDataService.insertDataUser(userWithEmail.getUsername(), userWithEmail.getPassword(), userWithEmail.getEmail());
                 break;
             default:
                 log.info("Something is wrong");

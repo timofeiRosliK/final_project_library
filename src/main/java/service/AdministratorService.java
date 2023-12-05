@@ -26,7 +26,8 @@ public class AdministratorService {
         while (rs.next()) {
             String administratorName = rs.getString("name");
             String hashedPassword = rs.getString("hashed_password");
-            if (administrator.getUsername().equals(administratorName) && comparePasswords((administrator.getPassword()),
+
+            if(comparePasswords((administrator.getPassword()),
                     hashedPassword)) {
                 return true;
             }
